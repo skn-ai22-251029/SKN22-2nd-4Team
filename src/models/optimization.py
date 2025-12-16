@@ -5,7 +5,6 @@ import os
 import sys
 from xgboost import XGBClassifier
 from lightgbm import LGBMClassifier
-from catboost import CatBoostClassifier
 from sklearn.model_selection import StratifiedKFold, cross_val_score
 from sklearn.metrics import f1_score, roc_auc_score, classification_report, precision_score, recall_score
 from optuna.samplers import TPESampler
@@ -91,21 +90,6 @@ class ModelOptimizer:
             }
             model = LGBMClassifier(**params)
             
-        elif self.model_name == 'CatBoost':
-            params = {
-                'boosting_type': 'Ordered', # Fixed
-                'bootstrap_type': 'Bayesian', # Fixed
-                'iterations': 200,
-                'random_state': RANDOM_STATE,
-                'verbose': 0,
-                'allow_writing_files': False,
-                'bagging_temperature': trial.suggest_float('bagging_temperature', 0.0, 1.0),
-                'depth': trial.suggest_int('depth', 4, 10),
-                'colsample_bylevel': trial.suggest_float('colsample_bylevel', 0.5, 1.0),
-                'thread_count': -1
-            }
-            model = CatBoostClassifier(**params)
-            
         else:
             raise ValueError(f"Unknown model: {self.model_name}")
 
@@ -126,7 +110,7 @@ def run_optimization():
     print(f"Loading Dataset: {DATASET_NAME}")
     X_train, y_train, X_test, y_test = load_data(DATASET_NAME)
     
-    models_to_tune = ['XGBoost','LightGBM', 'CatBoost']
+    models_to_tune = ['XGBoost','LightGBM']
     best_results = {}
     
     for model_name in models_to_tune:
@@ -162,11 +146,6 @@ def run_optimization():
         elif model_name == 'LightGBM':
             final_model = LGBMClassifier(
                 boosting_type='dart', n_estimators=1000, random_state=RANDOM_STATE, verbose=-1, **best_params
-            )
-        elif model_name == 'CatBoost':
-            final_model = CatBoostClassifier(
-                boosting_type='Ordered', bootstrap_type='Bayesian', iterations=1000,
-                random_state=RANDOM_STATE, verbose=0, allow_writing_files=False, **best_params
             )
             
         final_model.fit(X_train, y_train)
