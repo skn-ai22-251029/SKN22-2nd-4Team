@@ -21,7 +21,7 @@
 - **데이터 소스**: 통신사 고객 사용 이력 데이터 (4,250 rows)
 - **Target 변수**: `churn` (1 = 이탈, 0 = 유지)
 - **데이터 특성**:
-  - **불균형 데이터**: 이탈률 약 **14%**
+  - **불균형 데이터**: 이탈률 약 **14.1%** (4,250명 중 14.1%)
   - **주요 피처**: 주간/야간 통화량, 국제전화 요금, 고객센터 통화 횟수, 요금제 가입 여부 등
 
 ---
@@ -32,7 +32,7 @@
 
 ### **🛠 1. 데이터 전처리 (Preprocessing)**
 - **이상치(Outlier) 보존**: 'Heavy User'의 패턴(높은 통화량 등)이 실제 이탈과 밀접한 연관이 있음을 확인하여, 이상치를 인위적으로 제거하지 않고 보존했습니다.
-- **인코딩(Encoding)**: CatBoost의 자체 처리 방식 대신 **원-핫 인코딩(One-Hot Encoding)**을 적용하여, 범주형 변수의 영향력을 독립적인 피처로 분리·강화했습니다.
+- **인코딩(Encoding)**: **레이블 인코딩(Label Encoding)**을 적용하여, 범주형 변수를 효율적으로 수치화하고 불필요한 차원 확대를 방지했습니다.
 
 ### **⚖️ 2. 불균형 데이터 처리 (Handling Imbalance)**
 - **실험**: SMOTE, SMOTE-Tomek, SMOTE-ENN 등 다양한 오버샘플링 기법과 Class Weight 적용을 비교 실험했습니다.
@@ -97,10 +97,8 @@ streamlit run app.py
 ### **2. 🧪 모델 최적화 및 실험 (Optimization)**
 새로운 데이터나 파라미터로 모델을 다시 최적화하려면 아래 스크립트를 실행합니다.
 
-```bash
-# CatBoost 최적화 (Raw Data + No Class Weights)
-python src/models/optimization.py
-```
+# 모델 최적화 및 학습 전체 실행 (train_catboost.py, optimization.py, optimization_2.py 순차 실행)
+python src/models/train_catboost.py && python src/models/optimization.py && python src/models/optimization_2.py
 
 ---
 

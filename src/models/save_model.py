@@ -2,7 +2,7 @@ import os
 import pickle
 import pandas as pd
 from catboost import CatBoostClassifier
-from cb import get_trained_model, load_data
+from train_catboost import get_trained_model, load_data
 
 # 현재 스크립트의 절대 경로를 기준으로 저장 경로 설정
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
