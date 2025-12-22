@@ -97,8 +97,11 @@ streamlit run app.py
 ### **2. 🧪 모델 최적화 및 실험 (Optimization)**
 새로운 데이터나 파라미터로 모델을 다시 최적화하려면 아래 스크립트를 실행합니다.
 
-# 모델 최적화 및 학습 전체 실행 (train_catboost.py, optimization.py, optimization_2.py 순차 실행)
+#### 모델 최적화 및 학습 전체 실행 (train_catboost.py, optimization.py, optimization_2.py 순차 실행)
+
+``` bash
 python src/models/train_catboost.py && python src/models/optimization.py && python src/models/optimization_2.py
+```
 
 ---
 
