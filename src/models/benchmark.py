@@ -109,7 +109,7 @@ def load_raw_data_for_catboost():
     # 시드 42를 사용한 표준 80/20 분할이 사용되었다고 가정함.
     from sklearn.model_selection import train_test_split
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, stratify=y, random_state=RANDOM_STATE
+        X, y, test_size=0.15, stratify=y, random_state=RANDOM_STATE
     )
     
     cat_features = X.select_dtypes(include=['object']).columns.tolist()
